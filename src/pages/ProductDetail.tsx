@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Minus, Plus, Star, ShoppingCart, Heart, Share2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Minus,
+  Plus,
+  Star,
+  ShoppingCart,
+  Heart,
+  Share2,
+} from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,14 +27,26 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <Layout>
-        <div className="container py-16 text-center">
-          <h1 className="text-2xl font-bold">Product not found</h1>
-          <Button variant="outline" className="mt-4" asChild>
-            <Link to="/products">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to products
-            </Link>
-          </Button>
+        <div className="container min-h-[60vh] flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center animate-fade-in">
+            <img
+              src="https://illustrations.popsy.co/gray/box-open.svg"
+              className="mb-8 h-32 opacity-70"
+              alt="Not found"
+            />
+            <h1 className="text-3xl font-extrabold tracking-tight text-foreground mb-2">
+              Product not found
+            </h1>
+            <p className="text-muted-foreground mb-4">
+              The product you are looking for does not exist
+            </p>
+            <Button variant="outline" asChild>
+              <Link to="/products" className="inline-flex items-center">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to products
+              </Link>
+            </Button>
+          </div>
         </div>
       </Layout>
     );
@@ -44,115 +64,160 @@ const ProductDetail = () => {
   return (
     <Layout>
       <div className="container py-8">
-        <Button variant="ghost" className="mb-6" asChild>
-          <Link to="/products">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to products
-          </Link>
-        </Button>
+        <div className="mb-8 flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full shadow-none border hover:bg-accent hover:text-accent-foreground"
+            asChild
+          >
+            <Link to="/products">
+              <ArrowLeft className="h-5 w-5" />
+            </Link>
+          </Button>
+          <span className="ml-2 text-sm text-muted-foreground">
+            <Link to="/products" className="hover:underline">
+              Back to products
+            </Link>
+          </span>
+        </div>
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          {/* Product Image */}
-          <div className="relative aspect-square overflow-hidden rounded-2xl bg-secondary">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:items-start animate-fade-in">
+          {/* Product Image Block */}
+          <div className="relative rounded-3xl bg-gradient-to-br from-secondary/70 to-muted shadow-lg overflow-hidden aspect-square flex items-center justify-center min-h-[330px]">
             <img
               src={product.image}
               alt={product.name}
-              className="h-full w-full object-cover"
+              className="object-contain w-5/6 max-h-[90%] drop-shadow-2xl transition-transform duration-300 hover:scale-105"
             />
             {product.stock < 5 && product.stock > 0 && (
-              <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">
+              <Badge className="absolute top-5 left-5 z-10 bg-amber-500/90 text-amber-50 text-xs rounded-full px-4 py-1 shadow-lg animate-pulse">
                 Only {product.stock} left
+              </Badge>
+            )}
+            {product.stock === 0 && (
+              <Badge className="absolute top-5 left-5 bg-red-600 text-white text-xs rounded-full px-5 py-1 shadow-lg">
+                Out of Stock
               </Badge>
             )}
           </div>
 
-          {/* Product Info */}
-          <div className="flex flex-col">
-            <Badge variant="secondary" className="w-fit">
-              {product.category}
-            </Badge>
+          {/* Product Details Block */}
+          <div className="flex flex-col py-2 px-2 sm:px-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Badge
+                variant="secondary"
+                className="uppercase tracking-wide px-4 py-2 rounded-lg"
+              >
+                {product.category}
+              </Badge>
+            </div>
 
-            <h1 className="mt-4 text-3xl font-bold tracking-tight lg:text-4xl">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight leading-tight">
               {product.name}
             </h1>
 
-            <div className="mt-4 flex items-center gap-4">
-              <div className="flex items-center gap-1">
+            <div className="mt-4 flex items-center gap-3">
+              <div className="flex items-center gap-[1.5px]">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-5 w-5 ${
+                    className={`h-5 w-5 drop-shadow ${
                       i < Math.floor(product.rating)
-                        ? "fill-accent text-accent"
-                        : "fill-muted text-muted"
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "fill-muted text-muted-foreground"
                     }`}
                   />
                 ))}
               </div>
-              <span className="text-sm text-muted-foreground">
-                {product.rating} ({product.reviews} reviews)
+              <span className="text-xs md:text-sm text-muted-foreground/80">
+                {product.rating.toFixed(1)} ({product.reviews} reviews)
               </span>
             </div>
 
-            <p className="mt-6 text-lg text-muted-foreground">
+            <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
               {product.description}
             </p>
 
-            <Separator className="my-6" />
+            <Separator className="my-7" />
 
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-price">
+              <span className="text-4xl font-extrabold text-price">
                 ${product.price.toFixed(2)}
               </span>
+              {product.price > 200 && (
+                <span className="ml-2 text-sm text-green-600 font-semibold bg-green-100 px-2 py-0.5 rounded">
+                  Free Shipping
+                </span>
+              )}
             </div>
 
-            <div className="mt-6 flex items-center gap-4">
-              <span className="text-sm font-medium">Quantity:</span>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <span className="w-12 text-center font-medium">{quantity}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                  disabled={quantity >= product.stock}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
+            <div className="mt-6 flex flex-wrap gap-6 items-center">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-medium text-foreground/80">Quantity:</span>
+                <div className="flex items-center gap-1 bg-muted rounded-lg px-2 py-1 shadow-inner">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="rounded-full"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="w-10 text-center text-lg font-semibold select-none">
+                    {quantity}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() =>
+                      setQuantity(Math.min(product.stock, quantity + 1))
+                    }
+                    disabled={quantity >= product.stock}
+                    className="rounded-full"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-              <span className="text-sm text-muted-foreground">
-                {product.stock} available
+              <span className="text-xs text-muted-foreground/80">
+                <span className="font-semibold text-foreground/60">{product.stock}</span> available
               </span>
             </div>
 
-            <div className="mt-8 flex gap-3">
+            <div className="mt-10 flex flex-wrap gap-3 items-center">
               <Button
                 variant="accent"
                 size="lg"
-                className="flex-1"
+                className="flex-1 min-w-[160px] shadow-lg font-bold uppercase text-base tracking-wide py-6 animate-bounce-short"
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
               >
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
               </Button>
-              <Button variant="outline" size="lg">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full border-neutral-200 shadow-none hover:bg-accent/80"
+                aria-label="Add to wishlist"
+              >
                 <Heart className="h-5 w-5" />
               </Button>
-              <Button variant="outline" size="lg">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full border-neutral-200 shadow-none hover:bg-accent/80"
+                aria-label="Share"
+              >
                 <Share2 className="h-5 w-5" />
               </Button>
             </div>
 
             {product.stock === 0 && (
-              <p className="mt-4 text-sm text-destructive">
-                This product is currently out of stock
+              <p className="mt-6 text-sm text-destructive font-bold flex gap-2 items-center">
+                <span className="animate-pulse w-2 h-2 rounded-full bg-red-500 inline-block" />
+                This product is currently <span className="underline">out of stock</span>
               </p>
             )}
           </div>
@@ -160,11 +225,16 @@ const ProductDetail = () => {
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold mb-6">Related Products</h2>
+          <div className="mt-20 pb-10">
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-7 tracking-tight flex items-center gap-2">
+              <span className="inline-block bg-gradient-to-r from-accent via-primary/30 to-accent-foreground bg-clip-text text-transparent">
+                Related Products
+              </span>
+              <span className="block h-1 w-12 bg-gradient-to-r from-primary to-accent rounded-full" />
+            </h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {relatedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {relatedProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
               ))}
             </div>
           </div>

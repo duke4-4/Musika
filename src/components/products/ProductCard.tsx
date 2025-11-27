@@ -16,61 +16,79 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
   return (
     <div
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-xl bg-card card-shadow transition-all duration-300 hover:card-shadow-hover",
+        "group relative flex flex-col overflow-hidden rounded-3xl bg-gradient-to-br from-background via-card/90 to-accent/10 shadow-xl hover:shadow-2xl hover:scale-[1.021] transition-all duration-300 border border-border/40",
         className
       )}
     >
-      <Link to={`/products/${product.id}`} className="relative aspect-square overflow-hidden">
+      {/* Modern image with glassmorphic badge overlays */}
+      <Link to={`/products/${product.id}`} className="relative aspect-[4/3] overflow-hidden rounded-t-3xl">
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-105 group-hover:contrast-115"
+          style={{}}
         />
+        {/* Modern glass badge for stock info */}
         {product.stock < 5 && product.stock > 0 && (
-          <span className="absolute top-3 left-3 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
-            Only {product.stock} left
+          <span className="absolute top-4 left-4 z-10 rounded-full bg-accent/90 backdrop-blur px-3 py-1 text-xs font-semibold text-accent-foreground shadow-md border border-accent/70">
+            <span className="inline-block animate-pulse">
+              Only {product.stock} left
+            </span>
           </span>
         )}
         {product.stock === 0 && (
-          <span className="absolute top-3 left-3 rounded-full bg-destructive px-3 py-1 text-xs font-medium text-destructive-foreground">
+          <span className="absolute top-4 left-4 z-10 rounded-full bg-destructive/90 backdrop-blur px-3 py-1 text-xs font-semibold text-destructive-foreground shadow-md border border-destructive/60">
             Out of stock
           </span>
         )}
+        {/* Subtle floating glow effect */}
+        <span className="pointer-events-none absolute inset-0 z-0 rounded-t-3xl bg-gradient-to-t from-background/30 via-transparent to-accent/20 blur-xl opacity-30" />
       </Link>
 
-      <div className="flex flex-1 flex-col p-4">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+      <div className="flex flex-1 flex-col gap-2 px-5 py-4 sm:py-5">
+        {/* Category Modern Label */}
+        <span className="self-start text-[0.7rem] font-semibold uppercase tracking-widest text-accent px-2 py-0.5 bg-accent/10 rounded-md mb-1 shadow-sm">
           {product.category}
         </span>
-        <Link to={`/products/${product.id}`}>
-          <h3 className="mt-1 font-semibold text-card-foreground line-clamp-1 hover:text-primary transition-colors">
+
+        <Link to={`/products/${product.id}`} className="focus:outline-none focus-visible:ring-2 ring-primary/40 rounded">
+          <h3 className="font-heading text-lg sm:text-xl max-w-full font-extrabold tracking-tight line-clamp-1 bg-gradient-to-r from-foreground via-accent/80 to-primary text-transparent bg-clip-text transition-colors group-hover:from-primary group-hover:to-accent">
             {product.name}
           </h3>
         </Link>
-        <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+
+        {/* Description Modern Style */}
+        <p className="text-sm text-muted-foreground/95 line-clamp-2 mt-0">
           {product.description}
         </p>
 
-        <div className="mt-auto pt-4 flex items-center justify-between">
-          <div>
-            <span className="text-lg font-bold text-price">
+        {/* Price & Actions */}
+        <div className="mt-auto pt-6 flex items-end justify-between gap-2">
+          <div className="">
+            <span className="inline-block text-[1.13rem] sm:text-xl font-black text-price bg-gradient-to-r from-price to-primary/80 bg-clip-text text-transparent drop-shadow-sm">
               ${product.price.toFixed(2)}
             </span>
-            <div className="flex items-center gap-1 mt-1">
-              <Star className="h-3.5 w-3.5 fill-accent text-accent" />
-              <span className="text-xs text-muted-foreground">
-                {product.rating} ({product.reviews})
+            <div className="flex items-center gap-1.5 mt-2">
+              <Star className="h-4 w-4 fill-accent text-accent drop-shadow" />
+              <span className="text-xs font-bold text-foreground/70">
+                {product.rating}
               </span>
+              <span className="text-xs text-muted-foreground/80 font-mono">({product.reviews})</span>
             </div>
           </div>
+          {/* Modern floating add-to-cart btn */}
           <Button
-            variant="default"
+            variant="accent"
             size="icon"
             onClick={() => addToCart(product)}
             disabled={product.stock === 0}
-            className="rounded-full"
+            className={cn(
+              "rounded-full shadow-lg shadow-primary/15 border-transparent bg-gradient-to-tr from-primary via-accent to-primary/60 text-primary-foreground transition-transform duration-150 hover:scale-110 hover:shadow-xl hover:from-accent/90 hover:to-primary cursor-pointer",
+              product.stock === 0 ? "opacity-40 pointer-events-none" : ""
+            )}
+            aria-label="Add to cart"
           >
-            <ShoppingCart className="h-4 w-4" />
+            <ShoppingCart className="h-5 w-5" />
           </Button>
         </div>
       </div>
