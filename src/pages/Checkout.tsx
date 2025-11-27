@@ -10,8 +10,8 @@ import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 
 const inputBase =
-  "rounded-lg border border-border bg-muted/70 focus:ring-2 ring-primary px-4 py-2 text-base transition shadow-sm placeholder:text-muted-foreground";
-const labelBase = "font-medium text-muted-foreground text-sm";
+  "rounded-lg border border-accent bg-muted/70 focus:ring-2 ring-accent px-4 py-2 text-base transition shadow-sm placeholder:text-muted-foreground"; // border-accent
+const labelBase = "font-medium text-accent text-sm"; // color accent
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -43,8 +43,7 @@ const Checkout = () => {
   return (
     <Layout>
       <div className="container py-8 md:py-16 flex flex-col gap-4">
-        <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-4">Checkout</h1>
-
+        <h1 className="text-4xl font-extrabold tracking-tight text-accent mb-4">Checkout</h1>
         <form
           onSubmit={handleSubmit}
           className="rounded-2xl bg-card/75 p-3 md:p-6 shadow-xl backdrop-blur-md"
@@ -53,9 +52,9 @@ const Checkout = () => {
             {/* Customer Information */}
             <div className="flex flex-col gap-8">
               {/* Contact Info */}
-              <section className="rounded-2xl border-2 border-border bg-[rgba(255,255,255,0.95)] dark:bg-background p-6 shadow-lg">
-                <h2 className="text-xl font-bold mb-5 text-foreground flex items-center gap-2">
-                  <span className="h-3 w-3 bg-primary rounded-full mr-2" /> Contact Information
+              <section className="rounded-2xl border-2 border-accent bg-[rgba(255,255,255,0.95)] dark:bg-background p-6 shadow-lg">
+                <h2 className="text-xl font-bold mb-5 text-accent flex items-center gap-2">
+                  <span className="h-3 w-3 bg-accent rounded-full mr-2" /> Contact Information
                 </h2>
                 <div className="space-y-5">
                   <div className="grid gap-6 sm:grid-cols-2">
@@ -96,7 +95,7 @@ const Checkout = () => {
                       className={`${inputBase} pr-10`}
                       autoComplete="email"
                     />
-                    <Mail className="absolute right-3 top-9 h-5 w-5 text-muted-foreground pointer-events-none" />
+                    <Mail className="absolute right-3 top-9 h-5 w-5 text-accent pointer-events-none" />
                   </div>
                   <div className="flex flex-col gap-2 relative">
                     <Label htmlFor="phone" className={labelBase}>
@@ -110,15 +109,15 @@ const Checkout = () => {
                       className={`${inputBase} pr-10`}
                       autoComplete="tel"
                     />
-                    <Phone className="absolute right-3 top-9 h-5 w-5 text-muted-foreground pointer-events-none" />
+                    <Phone className="absolute right-3 top-9 h-5 w-5 text-accent pointer-events-none" />
                   </div>
                 </div>
               </section>
 
               {/* Shipping Address */}
-              <section className="rounded-2xl border-2 border-border bg-[rgba(255,255,255,0.97)] dark:bg-background p-6 shadow-lg">
-                <h2 className="text-xl font-bold mb-5 text-foreground flex items-center gap-2">
-                  <span className="h-3 w-3 bg-primary rounded-full mr-2" />
+              <section className="rounded-2xl border-2 border-accent bg-[rgba(255,255,255,0.97)] dark:bg-background p-6 shadow-lg">
+                <h2 className="text-xl font-bold mb-5 text-accent flex items-center gap-2">
+                  <span className="h-3 w-3 bg-accent rounded-full mr-2" />
                   Shipping Address
                 </h2>
                 <div className="space-y-5">
@@ -187,9 +186,9 @@ const Checkout = () => {
               </section>
 
               {/* Payment */}
-              <section className="rounded-2xl border-2 border-border bg-[rgba(255,255,255,0.98)] dark:bg-background p-6 shadow-lg">
-                <h2 className="text-xl font-bold mb-5 text-foreground flex items-center gap-2">
-                  <span className="h-3 w-3 bg-primary rounded-full mr-2" /> Payment Information
+              <section className="rounded-2xl border-2 border-accent bg-[rgba(255,255,255,0.98)] dark:bg-background p-6 shadow-lg">
+                <h2 className="text-xl font-bold mb-5 text-accent flex items-center gap-2">
+                  <span className="h-3 w-3 bg-accent rounded-full mr-2" /> Payment Information
                 </h2>
                 <div className="space-y-5">
                   <div className="flex flex-col gap-2 relative">
@@ -203,7 +202,7 @@ const Checkout = () => {
                       className={`${inputBase} pr-12 tracking-widest`}
                       autoComplete="cc-number"
                     />
-                    <CreditCard className="absolute right-3 top-9 h-5 w-5 text-muted-foreground pointer-events-none" />
+                    <CreditCard className="absolute right-3 top-9 h-5 w-5 text-accent pointer-events-none" />
                   </div>
                   <div className="grid gap-5 sm:grid-cols-3">
                     <div className="flex flex-col gap-2 sm:col-span-2">
@@ -232,10 +231,10 @@ const Checkout = () => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground border-t pt-3">
-                  <Lock className="h-4 w-4" />
+                <div className="mt-4 flex items-center gap-2 text-xs text-accent border-t pt-3">
+                  <Lock className="h-4 w-4 text-accent" />
                   <span>
-                    Your payment information is <span className="font-semibold text-primary">secure</span> &amp; encrypted
+                    Your payment information is <span className="font-semibold text-accent">secure</span> &amp; encrypted
                   </span>
                 </div>
               </section>
@@ -243,63 +242,63 @@ const Checkout = () => {
 
             {/* Order Summary */}
             <aside>
-              <div className="rounded-2xl border-2 border-border bg-gradient-to-b from-card/80 to-muted/80 p-6 sticky top-20 shadow-xl">
-                <h2 className="text-xl font-bold mb-5 text-foreground">Order Summary</h2>
+              <div className="rounded-2xl border-2 border-accent bg-gradient-to-b from-card/80 to-muted/80 p-6 sticky top-20 shadow-xl">
+                <h2 className="text-xl font-bold mb-5 text-accent">Order Summary</h2>
                 <div className="max-h-80 overflow-y-auto space-y-4 custom-scrollbar pr-1">
                   {items.map((item) => (
                     <div
                       key={item.product.id}
-                      className="flex gap-4 items-center bg-muted rounded-lg p-3 hover:scale-[1.01] transition shadow-sm"
+                      className="flex gap-4 items-center bg-muted rounded-lg p-3 hover:scale-[1.01] transition shadow-sm border border-accent"
                     >
                       <img
                         src={item.product.image}
                         alt={item.product.name}
-                        className="h-14 w-14 rounded-md object-cover border border-border"
+                        className="h-14 w-14 rounded-md object-cover border border-accent"
                         loading="lazy"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-base text-primary line-clamp-1">
+                        <p className="font-semibold text-base text-accent line-clamp-1">
                           {item.product.name}
                         </p>
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <p className="text-xs text-accent/80 mt-1">
                           Qty: <span className="font-medium">{item.quantity}</span>
                         </p>
                       </div>
-                      <p className="font-semibold text-base text-right min-w-fit">
+                      <p className="font-semibold text-base text-right min-w-fit text-accent">
                         ${(item.product.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   ))}
                 </div>
 
-                <Separator className="my-5" />
+                <Separator className="my-5 bg-accent" />
 
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-medium">${totalPrice.toFixed(2)}</span>
+                    <span className="text-accent/90">Subtotal</span>
+                    <span className="font-medium text-accent">${totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Shipping</span>
+                    <span className="text-accent/90">Shipping</span>
                     <span className="font-medium">
                       {shipping === 0 ? (
                         <span className="text-green-600 dark:text-green-400">Free</span>
                       ) : (
-                        `$${shipping.toFixed(2)}`
+                        <span className="text-accent">{`$${shipping.toFixed(2)}`}</span>
                       )}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Tax</span>
-                    <span className="font-medium">${tax.toFixed(2)}</span>
+                    <span className="text-accent/90">Tax</span>
+                    <span className="font-medium text-accent">${tax.toFixed(2)}</span>
                   </div>
                 </div>
 
-                <Separator className="my-5" />
+                <Separator className="my-5 bg-accent" />
 
                 <div className="flex justify-between font-bold text-lg items-center">
-                  <span>Total</span>
-                  <span className="text-primary">${total.toFixed(2)}</span>
+                  <span className="text-accent">Total</span>
+                  <span className="text-accent">${total.toFixed(2)}</span>
                 </div>
 
                 <Button

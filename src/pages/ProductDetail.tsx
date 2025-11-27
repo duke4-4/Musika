@@ -40,7 +40,7 @@ const ProductDetail = () => {
             <p className="text-muted-foreground mb-4">
               The product you are looking for does not exist
             </p>
-            <Button variant="outline" asChild>
+            <Button variant="accent" asChild>
               <Link to="/products" className="inline-flex items-center">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to products
@@ -66,16 +66,16 @@ const ProductDetail = () => {
       <div className="container py-8">
         <div className="mb-8 flex items-center gap-2">
           <Button
-            variant="ghost"
+            variant="accent"
             size="icon"
-            className="rounded-full shadow-none border hover:bg-accent hover:text-accent-foreground"
+            className="rounded-full shadow-none border border-accent/30 hover:bg-accent/80 hover:text-accent-foreground"
             asChild
           >
             <Link to="/products">
               <ArrowLeft className="h-5 w-5" />
             </Link>
           </Button>
-          <span className="ml-2 text-sm text-muted-foreground">
+          <span className="ml-2 text-sm text-accent">
             <Link to="/products" className="hover:underline">
               Back to products
             </Link>
@@ -84,19 +84,25 @@ const ProductDetail = () => {
 
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:items-start animate-fade-in">
           {/* Product Image Block */}
-          <div className="relative rounded-3xl bg-gradient-to-br from-secondary/70 to-muted shadow-lg overflow-hidden aspect-square flex items-center justify-center min-h-[330px]">
+          <div className="relative rounded-3xl bg-gradient-to-br from-accent/40 to-muted shadow-lg overflow-hidden aspect-square flex items-center justify-center min-h-[330px]">
             <img
               src={product.image}
               alt={product.name}
               className="object-contain w-5/6 max-h-[90%] drop-shadow-2xl transition-transform duration-300 hover:scale-105"
             />
             {product.stock < 5 && product.stock > 0 && (
-              <Badge className="absolute top-5 left-5 z-10 bg-amber-500/90 text-amber-50 text-xs rounded-full px-4 py-1 shadow-lg animate-pulse">
+              <Badge
+                variant="accent"
+                className="absolute top-5 left-5 z-10 text-xs rounded-full px-4 py-1 shadow-lg animate-pulse"
+              >
                 Only {product.stock} left
               </Badge>
             )}
             {product.stock === 0 && (
-              <Badge className="absolute top-5 left-5 bg-red-600 text-white text-xs rounded-full px-5 py-1 shadow-lg">
+              <Badge
+                variant="accent"
+                className="absolute top-5 left-5 text-xs rounded-full px-5 py-1 shadow-lg opacity-80"
+              >
                 Out of Stock
               </Badge>
             )}
@@ -106,14 +112,14 @@ const ProductDetail = () => {
           <div className="flex flex-col py-2 px-2 sm:px-6">
             <div className="flex items-center gap-2 mb-3">
               <Badge
-                variant="secondary"
+                variant="accent"
                 className="uppercase tracking-wide px-4 py-2 rounded-lg"
               >
                 {product.category}
               </Badge>
             </div>
 
-            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight leading-tight">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight leading-tight text-accent-foreground">
               {product.name}
             </h1>
 
@@ -124,13 +130,13 @@ const ProductDetail = () => {
                     key={i}
                     className={`h-5 w-5 drop-shadow ${
                       i < Math.floor(product.rating)
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "fill-muted text-muted-foreground"
+                        ? "fill-accent text-accent"
+                        : "fill-muted text-accent-foreground/20"
                     }`}
                   />
                 ))}
               </div>
-              <span className="text-xs md:text-sm text-muted-foreground/80">
+              <span className="text-xs md:text-sm text-accent/70">
                 {product.rating.toFixed(1)} ({product.reviews} reviews)
               </span>
             </div>
@@ -139,14 +145,14 @@ const ProductDetail = () => {
               {product.description}
             </p>
 
-            <Separator className="my-7" />
+            <Separator className="my-7 bg-accent" />
 
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-extrabold text-price">
+              <span className="text-4xl font-extrabold text-accent">
                 ${product.price.toFixed(2)}
               </span>
               {product.price > 200 && (
-                <span className="ml-2 text-sm text-green-600 font-semibold bg-green-100 px-2 py-0.5 rounded">
+                <span className="ml-2 text-sm text-accent font-semibold bg-accent/20 px-2 py-0.5 rounded">
                   Free Shipping
                 </span>
               )}
@@ -154,10 +160,10 @@ const ProductDetail = () => {
 
             <div className="mt-6 flex flex-wrap gap-6 items-center">
               <div className="flex items-center gap-3">
-                <span className="text-xs font-medium text-foreground/80">Quantity:</span>
-                <div className="flex items-center gap-1 bg-muted rounded-lg px-2 py-1 shadow-inner">
+                <span className="text-xs font-medium text-accent-foreground/80">Quantity:</span>
+                <div className="flex items-center gap-1 bg-accent/10 rounded-lg px-2 py-1 shadow-inner">
                   <Button
-                    variant="ghost"
+                    variant="accent"
                     size="icon"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="rounded-full"
@@ -168,7 +174,7 @@ const ProductDetail = () => {
                     {quantity}
                   </span>
                   <Button
-                    variant="ghost"
+                    variant="accent"
                     size="icon"
                     onClick={() =>
                       setQuantity(Math.min(product.stock, quantity + 1))
@@ -180,8 +186,9 @@ const ProductDetail = () => {
                   </Button>
                 </div>
               </div>
-              <span className="text-xs text-muted-foreground/80">
-                <span className="font-semibold text-foreground/60">{product.stock}</span> available
+              <span className="text-xs text-accent/60">
+                <span className="font-semibold text-accent">{product.stock}</span>{" "}
+                available
               </span>
             </div>
 
@@ -189,7 +196,7 @@ const ProductDetail = () => {
               <Button
                 variant="accent"
                 size="lg"
-                className="flex-1 min-w-[160px] shadow-lg font-bold uppercase text-base tracking-wide py-6 animate-bounce-short"
+                className="flex-1 min-w-[160px] shadow-lg font-bold uppercase text-base tracking-wide py-6"
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
               >
@@ -197,17 +204,17 @@ const ProductDetail = () => {
                 Add to Cart
               </Button>
               <Button
-                variant="outline"
+                variant="accent"
                 size="lg"
-                className="rounded-full border-neutral-200 shadow-none hover:bg-accent/80"
+                className="rounded-full border-none shadow-none hover:bg-accent/80"
                 aria-label="Add to wishlist"
               >
                 <Heart className="h-5 w-5" />
               </Button>
               <Button
-                variant="outline"
+                variant="accent"
                 size="lg"
-                className="rounded-full border-neutral-200 shadow-none hover:bg-accent/80"
+                className="rounded-full border-none shadow-none hover:bg-accent/80"
                 aria-label="Share"
               >
                 <Share2 className="h-5 w-5" />
@@ -227,10 +234,10 @@ const ProductDetail = () => {
         {relatedProducts.length > 0 && (
           <div className="mt-20 pb-10">
             <h2 className="text-2xl md:text-3xl font-extrabold mb-7 tracking-tight flex items-center gap-2">
-              <span className="inline-block bg-gradient-to-r from-accent via-primary/30 to-accent-foreground bg-clip-text text-transparent">
+              <span className="inline-block bg-gradient-to-r from-accent via-accent/60 to-accent-foreground bg-clip-text text-transparent">
                 Related Products
               </span>
-              <span className="block h-1 w-12 bg-gradient-to-r from-primary to-accent rounded-full" />
+              <span className="block h-1 w-12 bg-gradient-to-r from-accent to-accent rounded-full" />
             </h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {relatedProducts.map((p) => (

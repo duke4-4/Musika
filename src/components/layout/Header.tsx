@@ -8,74 +8,76 @@ export const Header = () => {
   const { totalItems } = useCart();
 
   return (
-    <header className="sticky top-0 z-[60] w-full border-b border-border/40 shadow-sm bg-background/85 backdrop-blur-md transition-all duration-300 supports-[backdrop-filter]:bg-background/70">
+    <header className="sticky top-0 z-[60] w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg">
       <div className="container flex h-20 items-center justify-between">
-        {/* Logo Modernized */}
-        <Link to="/" className="flex items-center gap-3 group cursor-pointer transition-transform active:scale-95">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-tr from-primary via-accent to-primary shadow-lg ring-2 ring-accent/15 group-hover:scale-110 group-hover:bg-accent transition-transform">
-            <span className="text-2xl font-black tracking-tighter text-primary-foreground drop-shadow-sm select-none">M</span>
+        {/* Modern Logo using accent color */}
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl shadow-md ring-2 ring-accent/20 bg-accent transition-transform">
+            <span className="text-3xl font-extrabold tracking-tighter text-accent-foreground drop-shadow-md select-none">
+              M
+            </span>
           </div>
-          <span className="text-2xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-foreground bg-clip-text text-transparent select-none group-hover:scale-105 transition-transform drop-shadow">
+          <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-accent to-orange-700 bg-clip-text text-transparent select-none group-hover:scale-105 transition-transform">
             Musika
           </span>
         </Link>
 
-        {/* Navigation */}
+        {/* Navigation using accent color variant */}
         <nav className="hidden md:flex items-center gap-10 ml-8">
           <Link
             to="/"
-            className="text-base font-semibold px-3 py-1.5 rounded-lg text-muted-foreground/90 transition-all hover:text-primary hover:bg-accent/10 focus-visible:ring-2 ring-accent"
+            className="text-base font-semibold px-4 py-2 rounded-lg text-accent transition-all hover:text-white hover:bg-accent focus-visible:ring-2 focus-visible:ring-accent/30 focus:outline-none"
           >
             Home
           </Link>
           <Link
             to="/products"
-            className="text-base font-semibold px-3 py-1.5 rounded-lg text-muted-foreground/90 transition-all hover:text-primary hover:bg-accent/10 focus-visible:ring-2 ring-accent"
+            className="text-base font-semibold px-4 py-2 rounded-lg text-accent transition-all hover:text-white hover:bg-accent focus-visible:ring-2 focus-visible:ring-accent/30 focus:outline-none"
           >
             Products
           </Link>
           <Link
             to="/categories"
-            className="text-base font-semibold px-3 py-1.5 rounded-lg text-muted-foreground/90 transition-all hover:text-primary hover:bg-accent/10 focus-visible:ring-2 ring-accent"
+            className="text-base font-semibold px-4 py-2 rounded-lg text-accent transition-all hover:text-white hover:bg-accent focus-visible:ring-2 focus-visible:ring-accent/30 focus:outline-none"
           >
             Categories
           </Link>
         </nav>
 
-        {/* Right actions */}
+        {/* Actions (search, user, cart) using accent variant */}
         <div className="flex items-center gap-1.5 md:gap-2">
           <Button
-            variant="ghost"
+            variant="accent"
             size="icon"
-            className="hidden md:flex rounded-full border border-transparent hover:border-accent focus:ring-2 focus:ring-accent/40 bg-muted/40 transition-all"
+            className="hidden md:flex rounded-full"
             aria-label="Search"
           >
-            <Search className="h-5 w-5 text-accent" />
+            <Search className="h-5 w-5" />
           </Button>
           <Button
-            variant="ghost"
+            variant="accent"
             size="icon"
-            className="rounded-full border border-transparent hover:border-accent focus:ring-2 focus:ring-accent/40 bg-muted/40 transition-all"
+            className="rounded-full"
             asChild
             aria-label="Account"
           >
             <Link to="/account">
-              <User className="h-5 w-5 text-primary" />
+              <User className="h-5 w-5" />
             </Link>
           </Button>
           <Button
-            variant="ghost"
+            variant="accent"
             size="icon"
-            className="relative rounded-full border border-transparent hover:border-accent focus:ring-2 focus:ring-accent/40 bg-muted/40 transition-all"
+            className="relative rounded-full"
             asChild
             aria-label="Cart"
           >
             <Link to="/cart">
-              <ShoppingCart className="h-5 w-5 text-accent" />
+              <ShoppingCart className="h-5 w-5" />
               {totalItems > 0 && (
                 <Badge
-                  variant="default"
-                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full flex items-center justify-center text-[0.72rem] font-bold bg-gradient-to-tr from-accent to-primary text-primary-foreground shadow-lg p-0 animate-bounce"
+                  variant="accent"
+                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full flex items-center justify-center text-[0.7rem] font-bold shadow-lg p-0 animate-bounce"
                 >
                   {totalItems}
                 </Badge>

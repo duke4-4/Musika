@@ -85,23 +85,23 @@ const Products = () => {
               </p>
               <div className="flex mt-7 gap-3 flex-wrap">
                 <Button
-                  variant="secondary"
+                  variant="accent"
                   size="lg"
-                  className="flex items-center gap-2 rounded-full bg-gradient-to-br from-accent to-primary/70 text-primary-foreground shadow-lg shadow-primary/10 hover:scale-105 transition-transform"
+                  className="flex items-center gap-2 rounded-full shadow-lg shadow-primary/10 hover:scale-105 transition-transform"
                 >
                   <ShoppingBag className="h-5 w-5" />
                   Bestsellers
                 </Button>
                 <Button
-                  variant="ghost"
+                  variant="accent"
                   size="lg"
-                  className="flex items-center gap-2 rounded-full font-semibold ring-1 ring-border hover:bg-accent/20"
+                  className="flex items-center gap-2 rounded-full font-semibold ring-1 ring-accent/40 hover:bg-accent/30"
                 >
                   <Layers className="h-5 w-5" />
                   Categories
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="accent"
                   size="lg"
                   className="flex items-center gap-2 rounded-full font-semibold"
                 >
@@ -136,7 +136,7 @@ const Products = () => {
             className="md:flex-1"
           />
           <Button
-            variant="ghost"
+            variant="accent"
             size="sm"
             className="flex items-center gap-2 text-xs md:text-sm mt-2 md:mt-0"
             onClick={() => setFilters({ category: "", minPrice: 0, maxPrice: 1000, search: "" })}
@@ -165,7 +165,7 @@ const Products = () => {
               No products found for your selection. Try a different search or reset your filters to browse our full collection.
             </p>
             <Button
-              variant="outline"
+              variant="accent"
               size="lg"
               onClick={() => setFilters({
                 category: "",

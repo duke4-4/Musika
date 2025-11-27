@@ -1,5 +1,6 @@
 import { Product } from "@/types/product";
 import { ProductCard } from "./ProductCard";
+import { Button } from "@/components/ui/button";
 
 interface ProductGridProps {
   products: Product[];
@@ -13,6 +14,10 @@ export const ProductGrid = ({ products }: ProductGridProps) => {
         <p className="text-sm text-muted-foreground mt-1">
           Try adjusting your filters or search query
         </p>
+        {/* "Shop Now" button using accent variant for better UI */}
+        <Button variant="accent" className="mt-6 rounded-full px-7 py-3 text-base font-semibold shadow-lg" asChild>
+          <a href="/products">Shop All Products</a>
+        </Button>
       </div>
     );
   }
@@ -25,6 +30,7 @@ export const ProductGrid = ({ products }: ProductGridProps) => {
           className="animate-fade-in"
           style={{ animationDelay: `${index * 50}ms` }}
         >
+          {/* Optionally, you could pass accent-related props to ProductCard if needed */}
           <ProductCard product={product} />
         </div>
       ))}

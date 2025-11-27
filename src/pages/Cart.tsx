@@ -14,7 +14,7 @@ const Cart = () => {
       <Layout>
         <div className="container py-16">
           <div className="flex flex-col items-center justify-center text-center">
-            <div className="rounded-full bg-secondary p-6 mb-6">
+            <div className="rounded-full bg-accent p-6 mb-6">
               <ShoppingBag className="h-12 w-12 text-muted-foreground" />
             </div>
             <h1 className="text-2xl font-bold">Your shopping cart is empty</h1>

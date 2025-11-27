@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
+// Use this color for the "accent" variant in the UI
+const ACCENT_COLOR = "#10B981"; // emerald-500 (tailwind)
+
 const OrderConfirmation = () => {
   const orderNumber = `ORD-${Date.now().toString(36).toUpperCase()}`;
 
@@ -106,6 +109,7 @@ const OrderConfirmation = () => {
                 variant="accent"
                 size="lg"
                 className="group text-lg px-8 py-6 h-auto shadow-lg hover:shadow-xl transition-all duration-300"
+                style={{ backgroundColor: ACCENT_COLOR, color: "#fff", borderColor: ACCENT_COLOR }}
                 asChild
               >
                 <Link to="/orders" className="flex items-center gap-3">
