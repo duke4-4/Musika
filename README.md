@@ -1,6 +1,6 @@
 Musika
 
-A modern e-commerce platform built with the latest web technologies, providing a fast and customizable shopping experience.
+A mini e-commerce platform built with the latest web technologies, providing a fast and customizable shopping experience.
 
 
 
@@ -11,8 +11,6 @@ Tech Stack
 - [TypeScript](https://www.typescriptlang.org/): Typed superset of JavaScript for better code reliability and maintainability.
 
 
-
-Getting Started
 
 Prerequisites
 
