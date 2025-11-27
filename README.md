@@ -4,6 +4,7 @@ A mini e-commerce platform built with the latest web technologies, providing a f
 
 
 
+
 Tech Stack
 
 - [Next.js](https://nextjs.org/): React framework for production-grade websites and applications.
