@@ -10,10 +10,10 @@ export const Footer = () => {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <span className="text-base font-bold text-primary-foreground">S</span>
               </div>
-              <span className="text-lg font-semibold">ShopLux</span>
+              <span className="text-lg font-semibold">Musika</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Premium products, exceptional quality. Your trusted destination for luxury goods.
+              Awesome products, exceptional quality. Your trusted destination for awesome goods.
             </p>
           </div>
 
@@ -49,7 +49,7 @@ export const Footer = () => {
 
         <div className="mt-12 pt-8 border-t border-border">
           <p className="text-center text-sm text-muted-foreground">
-            © 2024 ShopLux. All rights reserved.
+            © 2025 Musika. All rights reserved.
           </p>
         </div>
       </div>
