@@ -6,7 +6,7 @@ import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 import type { Request } from "express";
 
-const app = express();
+export const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -257,7 +257,9 @@ app.post("/api/checkout/session", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`API server ready on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`API server ready on http://localhost:${PORT}`);
+  });
+}
 

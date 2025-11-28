@@ -167,6 +167,9 @@ stripe listen --events checkout.session.completed,checkout.session.async_payment
 | --- | --- |
 | `npm run dev` | Vite dev server (frontend). |
 | `npm run server` | Express API for Stripe + Supabase operations. |
+| `npm run test` | Run Vitest unit tests (frontend + backend). |
+| `npm run test:watch` | Watch mode for Vitest while developing tests. |
+| `npm run test:coverage` | Generate coverage report via Vitest. |
 | `npm run build` | Production build of the web app. |
 | `npm run lint` | ESLint across the codebase. |
 
