@@ -36,38 +36,6 @@ git clone https://github.com/your-name/musika.git
 cd musika
 cp env.example .env        # fill in Supabase/Stripe/Resend keys
 npm install
-Musika
-
-A mini e-commerce platform built with the latest web technologies, providing a fast and customizable shopping experience.
-
-
-
-
-Tech Stack
-
-- [Next.js](https://nextjs.org/): React framework for production-grade websites and applications.
-- [Tailwind CSS](https://tailwindcss.com/): Utility-first CSS framework for rapid and responsive UI design.
-- [TypeScript](https://www.typescriptlang.org/): Typed superset of JavaScript for better code reliability and maintainability.
-
-
-
-Prerequisites
-
-- [Node.js](https://nodejs.org/) (v16 or newer recommended)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-
-HOW TO INSTALL
-
-1. Clone the repo
-
-   
-   git clone <YOUR_GIT_URL>
-   cd <YOUR_PROJECT_NAME>
-   
-
-2. Install dependencies
-
-   npm install
 
 # terminal 1 - Vite app
 npm run dev                # http://localhost:5173
@@ -75,32 +43,6 @@ npm run dev                # http://localhost:5173
 # terminal 2 - Express API (Stripe webhooks + checkout session)
 npm run server             # http://localhost:4000
 ```
-
-## Running with Docker
-
-> Make sure `.env` is populated before building—Vite reads the `VITE_*` keys during the image build.
-
-```bash
-# build both images (web + api)
-docker compose build
-
-# start containers in the foreground
-docker compose up
-
-# or run in the background
-docker compose up -d
-```
-
-- Web storefront: http://localhost:4173  
-- API/Stripe server: http://localhost:4000
-
-Useful commands:
-
-| Command | Description |
-| --- | --- |
-| `docker compose logs -f api` | Tail API logs. |
-| `docker compose logs -f web` | Tail web server logs (nginx). |
-| `docker compose down` | Stop and remove containers. |
 
 ## Environment Variables
 
