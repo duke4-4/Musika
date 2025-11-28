@@ -3,10 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { ProductFilters } from "@/components/products/ProductFilters";
-import { products } from "@/data/products";
 import { FilterState, SortOption } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Layers, Filter, ShoppingBag, RotateCcw } from "lucide-react";
+import { useProducts } from "@/hooks/useProducts";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
@@ -19,6 +19,8 @@ const Products = () => {
     search: "",
   });
   const [sortOption, setSortOption] = useState<SortOption>("rating");
+
+  const { data: products = [], isLoading } = useProducts();
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -80,7 +82,7 @@ const Products = () => {
                 All Products
               </h1>
               <p className="text-muted-foreground/80 mt-3 max-w-lg text-base md:text-lg">
-                {/* More dynamic for touch of modern: */}
+              
                 Discover <span className="font-bold text-accent">{filteredProducts.length}</span> {filteredProducts.length === 1 ? "product" : "products"} you’ll love. Filter, sort, and shop our most wanted picks!
               </p>
               <div className="flex mt-7 gap-3 flex-wrap">
@@ -152,7 +154,15 @@ const Products = () => {
         className="container mt-12 md:mt-16 min-h-[32vh] animate-fade-in"
         style={{ animationDelay: "220ms" }}
       >
-        {filteredProducts.length === 0 ? (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-24 sm:py-40 text-center rounded-2xl bg-muted/60 border border-dashed border-border/50 shadow-inner">
+            <div className="h-16 w-16 border-4 border-accent border-t-transparent rounded-full animate-spin mb-6" />
+            <p className="text-lg font-semibold text-foreground">Loading products...</p>
+            <p className="text-muted-foreground mt-2 max-w-md">
+              Fetching the latest catalog directly from Supabase. Thank you for your patience.
+            </p>
+          </div>
+        ) : filteredProducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 sm:py-40 text-center rounded-2xl bg-muted/60 border border-dashed border-border/50 shadow-inner">
             <img
               src="https://illustrations.popsy.co/gray/search-8.svg"

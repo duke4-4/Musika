@@ -1,80 +1,127 @@
 import { Link } from "react-router-dom";
-import { User, Package, Heart, Settings, LogOut } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Package, Heart, Settings, LogOut, ShieldCheck, CreditCard, Truck } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
-const features = [
+const profileSchema = z.object({
+  full_name: z.string().min(2, "Full name is required"),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  zip: z.string().optional(),
+});
+
+type ProfileFormValues = z.infer<typeof profileSchema>;
+
+const quickLinks = [
   {
     to: "/orders",
-    icon: <Package className="h-7 w-7 text-accent" />,
+    icon: <Package className="h-6 w-6 text-accent" />,
     title: "Orders",
-    desc: "Track your orders, view history"
+    desc: "Track and manage recent orders",
   },
   {
     to: "/wishlist",
-    icon: <Heart className="h-7 w-7 text-accent" />,
+    icon: <Heart className="h-6 w-6 text-accent" />,
     title: "Wishlist",
-    desc: "Browse your saved products"
+    desc: "View and edit saved products",
   },
   {
     to: "/settings",
-    icon: <Settings className="h-7 w-7 text-accent" />,
+    icon: <Settings className="h-6 w-6 text-accent" />,
     title: "Settings",
-    desc: "Personalize your experience"
-  }
+    desc: "Payment methods & preferences",
+  },
+];
+
+const stats = [
+  { icon: <ShieldCheck className="h-6 w-6" />, label: "Account Status", value: "Secure" },
+  { icon: <CreditCard className="h-6 w-6" />, label: "Default Payment", value: "Stripe Checkout" },
+  { icon: <Truck className="h-6 w-6" />, label: "Delivery Speed", value: "3-5 business days" },
 ];
 
 const Account = () => {
-  const isLoggedIn = false;
+  const { user, profile, signOut, refreshProfile, isLoading } = useAuth();
+  const [isSaving, setIsSaving] = useState(false);
 
-  if (!isLoggedIn) {
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      full_name: "",
+      phone: "",
+      address: "",
+      city: "",
+      state: "",
+      zip: "",
+    },
+  });
+
+  useEffect(() => {
+    if (profile) {
+      form.reset({
+        full_name: profile.full_name ?? "",
+        phone: profile.phone ?? "",
+        address: profile.address ?? "",
+        city: profile.city ?? "",
+        state: profile.state ?? "",
+        zip: profile.zip ?? "",
+      });
+    }
+  }, [form, profile]);
+
+  const greeting = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to sign out";
+      toast.error(message);
+    }
+  };
+
+  const onSubmit = async (values: ProfileFormValues) => {
+    if (!user) return;
+    setIsSaving(true);
+    const { error } = await supabase.from("profiles").upsert({
+      id: user.id,
+      ...values,
+      updated_at: new Date().toISOString(),
+    });
+
+    setIsSaving(false);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    toast.success("Profile updated");
+    await refreshProfile();
+  };
+
+  if (isLoading || !user) {
     return (
       <Layout>
-        <div className="container min-h-[75vh] flex items-center justify-center py-12 animate-fade-in">
-          <div className="w-full max-w-md rounded-3xl shadow-2xl bg-gradient-to-br from-accent/10 to-card/95 border border-border/70 backdrop-blur-2xl p-10 space-y-9">
-            <div className="flex flex-col items-center mb-2">
-              <div className="flex items-center justify-center h-24 w-24 rounded-2xl bg-gradient-to-tr from-accent/20 via-accent/10 to-accent/40 mb-4 ring-4 ring-accent/30 shadow-xl animate-fade-in-slow scale-100 hover:scale-105 duration-200 transition-transform backdrop-blur-xl">
-                <User className="h-12 w-12 text-accent drop-shadow-lg" />
-              </div>
-              <h1 className="text-4xl font-black tracking-tighter mb-1 bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent animate-gradient-x">
-                Welcome Back to Musika
-              </h1>
-              <p className="mt-2 text-muted-foreground/90 text-base text-center leading-relaxed">
-                Sign in to your account or create a new one to start exploring personalized features.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-border/60 bg-gradient-to-bl from-card/90 to-accent/10 backdrop-blur-lg p-7 shadow-inner space-y-7 animate-fade-in-up">
-              <Button
-                variant="accent"
-                className="w-full text-lg font-bold py-3 rounded-xl shadow-lg hover:scale-[1.03] transition-transform gap-2"
-                size="lg"
-                asChild
-              >
-                <Link to="/login">
-                  <User className="mr-2 h-5 w-5" />
-                  Sign In
-                </Link>
-              </Button>
-              <div className="relative flex items-center my-4">
-                <Separator className="flex-1" />
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-4 py-1 rounded-full text-xs text-muted-foreground/70 ring-1 ring-border shadow">
-                  or
-                </span>
-              </div>
-              <Button
-                variant="outline"
-                className="w-full text-lg font-bold py-3 rounded-xl border-accent/40 hover:border-accent/80 hover:bg-accent/10 transition-shadow gap-2"
-                size="lg"
-                asChild
-              >
-                <Link to="/register">
-                  <Settings className="mr-2 h-5 w-5 text-accent" />
-                  Create Account
-                </Link>
-              </Button>
-            </div>
-          </div>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <span className="text-accent font-semibold animate-pulse">Loading your account...</span>
         </div>
       </Layout>
     );
@@ -82,53 +129,186 @@ const Account = () => {
 
   return (
     <Layout>
-      <div className="container py-14 md:py-20 animate-fade-in">
-        <h1 className="text-5xl font-extrabold bg-gradient-to-tr from-accent to-primary bg-clip-text text-transparent mb-12 tracking-tight text-center animate-gradient-x">
-          My Account
-        </h1>
-        <div className="mt-2 grid gap-8 md:grid-cols-3 xl:grid-cols-4 md:gap-10">
-          {features.map((item) => (
-            <Link
-              key={item.title}
-              to={item.to}
-              className={`
-                group flex flex-col items-center gap-5 rounded-3xl border border-border/70
-                bg-gradient-to-br from-accent/10 to-card/80 p-9 shadow-xl hover:shadow-2xl
-                transition-all hover:scale-105 duration-200 hover:bg-gradient-to-br hover:from-accent/20 hover:to-card/95
-                focus-visible:ring-2 focus-visible:ring-accent cursor-pointer
-                backdrop-blur-md
-              `}
-              tabIndex={0}
-            >
-              <div className="rounded-xl p-5 bg-accent/10 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform ring-2 ring-accent/20">
-                {item.icon}
-              </div>
-              <div className="w-full text-center mt-2">
-                <h3 className="font-extrabold text-2xl mb-1 text-foreground/90 tracking-tight">{item.title}</h3>
-                <p className="text-sm text-muted-foreground/90 font-medium">{item.desc}</p>
-              </div>
-            </Link>
-          ))}
-          <button
-            className={`
-              flex flex-col items-center gap-5 rounded-3xl border border-border/60 bg-gradient-to-br from-accent/20 to-card/95
-              p-9 shadow-xl hover:shadow-2xl transition-all hover:scale-105 duration-200
-              focus-visible:ring-2 ring-accent cursor-pointer outline-none animate-fade-in group
-              backdrop-blur-md
-            `}
-            aria-label="Sign Out"
-            tabIndex={0}
-            type="button"
-            onClick={() => {/* Add sign out logic here */}}
-          >
-            <div className="rounded-xl p-5 bg-accent/10 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform ring-2 ring-accent/20">
-              <LogOut className="h-7 w-7 text-accent drop-shadow-lg" />
+      <div className="container py-10 md:py-16 space-y-10 animate-fade-in">
+        <div className="flex flex-col gap-4">
+          <p className="text-muted-foreground">{greeting},</p>
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+            {profile?.full_name || user.email}
+          </h1>
+          <p className="text-muted-foreground max-w-2xl">
+            Manage your personal information, payment preferences, and keep an eye on every order in real-time.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-[2fr_1fr]">
+          <Card className="border border-border/60 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">Profile details</CardTitle>
+              <CardDescription>Keep your contact and delivery information up to date.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="full_name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full name</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="Jane Doe" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="+1 (555) 000-0000" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Address</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="123 Main St" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="grid gap-6 md:grid-cols-3">
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="New York" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="state"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>State</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="NY" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="zip"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>ZIP</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="10001" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    <Button type="submit" disabled={isSaving} variant="accent">
+                      {isSaving ? "Saving..." : "Save changes"}
+                    </Button>
+                    <Button type="button" variant="outline" onClick={() => form.reset()} disabled={isSaving}>
+                      Reset
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+
+          <div className="space-y-6">
+            <Card className="border border-border/60 shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold">Quick actions</CardTitle>
+                <CardDescription>Jump back into your personalized flows.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {quickLinks.map((link) => (
+                  <Link
+                    key={link.title}
+                    to={link.to}
+                    className="flex items-start gap-4 rounded-xl border border-border/60 p-4 hover:border-accent transition-all"
+                  >
+                    <div className="rounded-full bg-accent/10 p-3">{link.icon}</div>
+                    <div>
+                      <p className="font-semibold">{link.title}</p>
+                      <p className="text-sm text-muted-foreground">{link.desc}</p>
+                    </div>
+                  </Link>
+                ))}
+                <Button variant="ghost" className="w-full gap-2 text-destructive" onClick={handleSignOut}>
+                  <LogOut className="h-4 w-4" />
+                  Sign out
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-border/60 shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold">Account health</CardTitle>
+                <CardDescription>Everything looks great. Keep exploring!</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {stats.map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="flex items-center gap-4 rounded-xl border border-border/60 p-4 hover:border-accent transition"
+                  >
+                    <div className="rounded-full bg-accent/10 p-3 text-accent">{stat.icon}</div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
+                      <p className="text-base font-semibold">{stat.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        <Separator />
+
+        <div className="rounded-3xl border border-border/60 bg-gradient-to-br from-accent/5 to-card/80 p-8 shadow-xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+            <div>
+              <p className="text-sm uppercase tracking-widest text-accent font-semibold">Order tracking</p>
+              <h2 className="text-2xl font-bold mt-1">Monitor every step in real-time</h2>
+              <p className="text-muted-foreground mt-2">
+                We connect Stripe payments, Supabase orders, and realtime listeners so you’re never in the dark.
+              </p>
             </div>
-            <div className="w-full text-center mt-2">
-              <h3 className="font-extrabold text-2xl mb-1 text-accent tracking-tight">Sign Out</h3>
-              <p className="text-sm text-muted-foreground font-medium">Log out of account</p>
-            </div>
-          </button>
+            <Button asChild variant="accent" size="lg" className="rounded-full">
+              <Link to="/orders">Open tracking dashboard</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </Layout>

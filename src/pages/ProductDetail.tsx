@@ -13,16 +13,28 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { products } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
 import { ProductCard } from "@/components/products/ProductCard";
+import { useProducts } from "@/hooks/useProducts";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const { data: products = [], isLoading } = useProducts();
   const [quantity, setQuantity] = useState(1);
 
   const product = products.find((p) => p.id === id);
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="container min-h-[60vh] flex flex-col items-center justify-center gap-4">
+          <div className="h-12 w-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+          <p className="text-muted-foreground">Loading product details…</p>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!product) {
     return (

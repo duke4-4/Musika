@@ -20,7 +20,7 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
         className
       )}
     >
-      {/* Modern image with glassmorphic badge overlays */}
+
       <Link to={`/products/${product.id}`} className="relative aspect-[4/3] overflow-hidden rounded-t-3xl">
         <img
           src={product.image}
