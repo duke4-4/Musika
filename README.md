@@ -44,6 +44,32 @@ npm run dev                # http://localhost:5173
 npm run server             # http://localhost:4000
 ```
 
+## Running with Docker
+
+> Make sure `.env` is populated before building—Vite reads the `VITE_*` keys during the image build.
+
+```bash
+# build both images (web + api)
+docker compose build
+
+# start containers in the foreground
+docker compose up
+
+# or run in the background
+docker compose up -d
+```
+
+- Web storefront: http://localhost:4173  
+- API/Stripe server: http://localhost:4000
+
+Useful commands:
+
+| Command | Description |
+| --- | --- |
+| `docker compose logs -f api` | Tail API logs. |
+| `docker compose logs -f web` | Tail web server logs (nginx). |
+| `docker compose down` | Stop and remove containers. |
+
 ## Environment Variables
 
 All variables live in `env.example`.

@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    command: npm run server
+    env_file:
+      - .env
+    ports:
+      - "${PORT:-4000}:4000"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    depends_on:
+      - api
+    ports:
+      - "${WEB_PORT:-4173}:80"
+    restart: unless-stopped
+
