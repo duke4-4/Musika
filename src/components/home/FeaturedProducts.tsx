@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/products/ProductCard";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 
 export const FeaturedProducts = () => {
+  const { data: products = [], isLoading } = useProducts();
   const featuredProducts = products.slice(0, 4);
 
   return (
@@ -26,15 +27,22 @@ export const FeaturedProducts = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredProducts.map((product, index) => (
-            <div
-              key={product.id}
-              className="animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  key={`skeleton-${index}`}
+                  className="h-72 rounded-2xl border border-dashed border-border/50 bg-muted/50 animate-pulse"
+                />
+              ))
+            : featuredProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
         </div>
 
         <div className="mt-8 text-center md:hidden">

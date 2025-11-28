@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { categories } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 
 const categoryImages: Record<string, string> = {
   Electronics: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&q=80",
@@ -10,6 +11,10 @@ const categoryImages: Record<string, string> = {
 };
 
 export const CategoryShowcase = () => {
+  const { data: products = [], isLoading } = useProducts();
+  const dynamicCategories = useMemo(() => Array.from(new Set(products.map((product) => product.category))), [products]);
+  const displayCategories = dynamicCategories.length > 0 ? dynamicCategories : Object.keys(categoryImages);
+
   return (
     <section className="py-16 md:py-24 bg-secondary/30">
       <div className="container">
@@ -21,7 +26,7 @@ export const CategoryShowcase = () => {
         </div>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-          {categories.map((category, index) => (
+          {(isLoading ? Object.keys(categoryImages) : displayCategories).map((category, index) => (
             <Link
               key={category}
               to={`/products?category=${category}`}
