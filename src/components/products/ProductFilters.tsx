@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,8 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FilterState, SortOption } from "@/types/product";
-import { categories } from "@/data/products";
 import { Badge } from "@/components/ui/badge";
+import { useProducts } from "@/hooks/useProducts";
 
 interface ProductFiltersProps {
   filters: FilterState;
@@ -25,6 +26,8 @@ export const ProductFilters = ({
   onFiltersChange,
   onSortChange,
 }: ProductFiltersProps) => {
+  const { data: products = [] } = useProducts();
+  const categories = useMemo(() => Array.from(new Set(products.map((product) => product.category))), [products]);
   const hasActiveFilters = filters.category || filters.search || filters.minPrice > 0 || filters.maxPrice < 1000;
 
   const clearFilters = () => {
