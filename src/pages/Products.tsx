@@ -82,7 +82,7 @@ const Products = () => {
                 All Products
               </h1>
               <p className="text-muted-foreground/80 mt-3 max-w-lg text-base md:text-lg">
-                {/* More dynamic for touch of modern: */}
+              
                 Discover <span className="font-bold text-accent">{filteredProducts.length}</span> {filteredProducts.length === 1 ? "product" : "products"} you’ll love. Filter, sort, and shop our most wanted picks!
               </p>
               <div className="flex mt-7 gap-3 flex-wrap">
