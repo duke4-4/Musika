@@ -10,7 +10,7 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-[60] w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg">
       <div className="container flex h-20 items-center justify-between">
-        {/* Modern Logo using accent color */}
+    
         <Link to="/" className="flex items-center gap-3 group">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl shadow-md ring-2 ring-accent/20 bg-accent transition-transform">
             <span className="text-3xl font-extrabold tracking-tighter text-accent-foreground drop-shadow-md select-none">
@@ -22,7 +22,7 @@ export const Header = () => {
           </span>
         </Link>
 
-        {/* Navigation using accent color variant */}
+        
         <nav className="hidden md:flex items-center gap-10 ml-8">
           <Link
             to="/"
